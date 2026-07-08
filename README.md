@@ -52,6 +52,7 @@ clash restart             # Restart Mihomo and enable the system proxy
 clash status              # Show the Mihomo systemd user service status
 clash list                # List nodes in the PROXY proxy group
 clash switch [node-number] # Switch to a node shown by clash list
+clash import [subscription-url-or-config-file] # Import a Clash subscription/config
 ```
 
 If no config is provided during first install, the script creates a sample file:
@@ -60,13 +61,44 @@ If no config is provided during first install, the script creates a sample file:
 ~/.config/mihomo/config.yaml
 ```
 
-Replace it with your own Mihomo/Clash config, then run:
+Replace it with your own Mihomo/Clash config, or import a Clash subscription URL:
+
+```bash
+clash import 'https://example.com/your-clash-subscription'
+clash restart
+```
+
+Then run:
 
 ```bash
 clash on
 clash list
 clash switch 1
 ```
+
+## Import a Clash subscription
+
+Most VPN providers can copy a Clash subscription URL. Import it with:
+
+```bash
+clash import 'https://example.com/your-clash-subscription'
+clash restart
+```
+
+You can also import a local config file:
+
+```bash
+clash import /path/to/config.yaml
+clash restart
+```
+
+The import command writes to:
+
+```bash
+~/.config/mihomo/config.yaml
+```
+
+If an old config already exists, it creates a timestamped backup next to it before replacing the file.
 
 ## Config requirements
 

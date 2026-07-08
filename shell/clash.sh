@@ -81,8 +81,63 @@ except Exception as exc:
 print(f'Switched to {target_index:02d} {node}')
 PY
             ;;
+        import)
+            shift
+            python3 - "$@" <<'PY'
+from pathlib import Path
+from datetime import datetime
+import re
+import shutil
+import sys
+import urllib.request
+
+if len(sys.argv) != 2:
+    print('Usage: clash import [subscription-url-or-config-file]')
+    raise SystemExit(2)
+
+source = sys.argv[1]
+config_dir = Path.home() / '.config' / 'mihomo'
+config_path = config_dir / 'config.yaml'
+config_dir.mkdir(parents=True, exist_ok=True)
+
+try:
+    if Path(source).is_file():
+        content = Path(source).read_text()
+    else:
+        request = urllib.request.Request(
+            source,
+            headers={'User-Agent': 'clash-for-ubuntu/1.0'},
+        )
+        with urllib.request.urlopen(request, timeout=30) as response:
+            content = response.read().decode('utf-8')
+except Exception as exc:
+    print(f'Import failed: {exc}')
+    raise SystemExit(1)
+
+if not content.strip():
+    print('Import failed: subscription/config is empty')
+    raise SystemExit(1)
+
+append = []
+if not re.search(r'(?m)^\s*(mixed-port|port|socks-port)\s*:', content):
+    append.append('mixed-port: 7890')
+if not re.search(r'(?m)^\s*external-controller\s*:', content):
+    append.append('external-controller: 127.0.0.1:9097')
+if append:
+    content = content.rstrip() + '\n\n# Added by clash-for-ubuntu\n' + '\n'.join(append) + '\n'
+
+if config_path.exists():
+    backup_path = config_path.with_suffix(f'.yaml.backup-{datetime.now().strftime("%Y%m%d%H%M%S")}')
+    shutil.copy2(config_path, backup_path)
+    print(f'Backup created: {backup_path}')
+
+config_path.write_text(content)
+print(f'Config imported to: {config_path}')
+print('Run clash restart to apply the new config.')
+PY
+            ;;
         *)
-            echo -e "clash on Start proxy\nclash off Stop proxy\nclash restart Restart proxy\nclash status Show proxy status\nclash list List nodes\nclash switch [node-number] Switch proxy node"
+            echo -e "clash on Start proxy\nclash off Stop proxy\nclash restart Restart proxy\nclash status Show proxy status\nclash list List nodes\nclash switch [node-number] Switch proxy node\nclash import [subscription-url-or-config-file] Import Clash subscription/config"
             return 2
             ;;
     esac
