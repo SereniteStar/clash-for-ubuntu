@@ -24,4 +24,4 @@ if start in text and end in text:
 PY
 fi
 
-echo "卸载完成。Mihomo 配置目录和内核文件未删除。"
+echo "Uninstall complete. Mihomo config directory and core binary were not removed."

@@ -21,7 +21,7 @@ import urllib.request
 try:
     data = json.load(urllib.request.urlopen('http://127.0.0.1:9097/proxies/PROXY', timeout=5))
 except Exception as exc:
-    print(f'无法连接 Clash API: {exc}')
+    print(f'Could not connect to Clash API: {exc}')
     raise SystemExit(1)
 
 current = data.get('now')
@@ -39,13 +39,13 @@ import urllib.error
 import urllib.request
 
 if len(sys.argv) != 2:
-    print('用法: clash switch [节点编号]')
+    print('Usage: clash switch [node-number]')
     raise SystemExit(2)
 
 try:
     target_index = int(sys.argv[1])
 except ValueError:
-    print('节点编号必须是数字')
+    print('Node number must be numeric')
     raise SystemExit(2)
 
 api_url = 'http://127.0.0.1:9097/proxies/PROXY'
@@ -54,11 +54,11 @@ try:
     data = json.load(urllib.request.urlopen(api_url, timeout=5))
     nodes = data.get('all', [])
 except Exception as exc:
-    print(f'无法连接 Clash API: {exc}')
+    print(f'Could not connect to Clash API: {exc}')
     raise SystemExit(1)
 
 if not 1 <= target_index <= len(nodes):
-    print(f'节点编号超出范围: 1-{len(nodes)}')
+    print(f'Node number out of range: 1-{len(nodes)}')
     raise SystemExit(2)
 
 node = nodes[target_index - 1]
@@ -72,17 +72,17 @@ request = urllib.request.Request(
 try:
     urllib.request.urlopen(request, timeout=5).read()
 except urllib.error.HTTPError as exc:
-    print(f'切换失败: HTTP {exc.code} {exc.reason}')
+    print(f'Switch failed: HTTP {exc.code} {exc.reason}')
     raise SystemExit(1)
 except Exception as exc:
-    print(f'切换失败: {exc}')
+    print(f'Switch failed: {exc}')
     raise SystemExit(1)
 
-print(f'已切换到 {target_index:02d} {node}')
+print(f'Switched to {target_index:02d} {node}')
 PY
             ;;
         *)
-            echo -e "clash on 开启代理\nclash off 关闭代理\nclash restart 重启代理\nclash status 查询代理状态\nclash list 节点列表\nclash switch [节点编号] 切换代理节点"
+            echo -e "clash on Start proxy\nclash off Stop proxy\nclash restart Restart proxy\nclash status Show proxy status\nclash list List nodes\nclash switch [node-number] Switch proxy node"
             return 2
             ;;
     esac

@@ -1,72 +1,109 @@
 # clash-for-ubuntu
 
-Ubuntu 上用于管理 Clash/Mihomo 的命令行快捷工具。
+Command-line shortcuts for managing Clash/Mihomo on Ubuntu.
 
-## 功能
+## Quick install
 
-安装后会提供 `clash` 命令：
-
-```bash
-clash on                  # 开启 Mihomo 并设置 GNOME 系统代理
-clash off                 # 关闭 Mihomo 并取消 GNOME 系统代理
-clash restart             # 重启 Mihomo 并开启系统代理
-clash status              # 查看 Mihomo systemd 用户服务状态
-clash list                # 查看 PROXY 代理组节点列表
-clash switch [节点编号]   # 切换到 clash list 中对应编号的节点
-```
-
-## 前提条件
-
-本项目不包含你的订阅配置，也不包含 Mihomo 内核二进制文件。使用前请确认：
-
-1. 已安装 Mihomo 内核到：
-
-   ```bash
-   ~/.local/bin/mihomo
-   ```
-
-2. 已准备好 Mihomo 配置目录：
-
-   ```bash
-   ~/.config/mihomo
-   ```
-
-3. 配置文件中启用了 External Controller，默认端口为 `9097`：
-
-   ```yaml
-   external-controller: 127.0.0.1:9097
-   ```
-
-4. 配置里有名为 `PROXY` 的代理组。
-
-## 安装
+On another Ubuntu computer, run:
 
 ```bash
-git clone https://github.com/YOUR_GITHUB_USERNAME/clash-for-ubuntu.git
+git clone https://github.com/SereniteStar/clash-for-ubuntu.git
 cd clash-for-ubuntu
 ./install.sh
 source ~/.bash_aliases
 ```
 
-如果你使用的是 zsh，可手动把 `shell/clash.sh` 加到 `~/.zshrc`。
+`install.sh` automatically:
 
-## 卸载
+- downloads and installs the Mihomo core to `~/.local/bin/mihomo` if it is missing
+- creates a sample `~/.config/mihomo/config.yaml` if no config exists
+- installs `proxy-on` and `proxy-off`
+- installs the `mihomo.service` user service
+- adds the `clash` command to bash, and to zsh if `~/.zshrc` exists
+
+If you already have a config file, pass it during installation:
+
+```bash
+./install.sh /path/to/config.yaml
+```
+
+You can also pass a subscription/config URL:
+
+```bash
+./install.sh 'https://example.com/your-config.yaml'
+```
+
+Or use an environment variable:
+
+```bash
+CONFIG_URL='https://example.com/your-config.yaml' ./install.sh
+```
+
+> Note: this repository does not store your subscription URL or provider config. Provide it separately on each computer.
+
+## Usage
+
+After installation, the `clash` command is available:
+
+```bash
+clash on                  # Start Mihomo and enable the GNOME system proxy
+clash off                 # Stop Mihomo and disable the GNOME system proxy
+clash restart             # Restart Mihomo and enable the system proxy
+clash status              # Show the Mihomo systemd user service status
+clash list                # List nodes in the PROXY proxy group
+clash switch [node-number] # Switch to a node shown by clash list
+```
+
+If no config is provided during first install, the script creates a sample file:
+
+```bash
+~/.config/mihomo/config.yaml
+```
+
+Replace it with your own Mihomo/Clash config, then run:
+
+```bash
+clash on
+clash list
+clash switch 1
+```
+
+## Config requirements
+
+To support `clash list` and `clash switch`, your config needs:
+
+```yaml
+external-controller: 127.0.0.1:9097
+```
+
+It also needs a proxy group named `PROXY`.
+
+If the config does not contain `external-controller` or a proxy port, the installer appends:
+
+```yaml
+mixed-port: 7890
+external-controller: 127.0.0.1:9097
+```
+
+## Update
+
+```bash
+cd clash-for-ubuntu
+git pull
+./install.sh
+```
+
+## Uninstall
 
 ```bash
 ./uninstall.sh
 ```
 
-卸载脚本会移除本项目安装的脚本和 systemd 用户服务，但不会删除你的 Mihomo 配置和内核文件。
+The uninstall script removes the scripts and systemd user service installed by this project. It does not remove your Mihomo config directory or the Mihomo core binary.
 
-## 说明
+## Defaults
 
-- 默认代理端口：`7890`
-- 默认 API 地址：`http://127.0.0.1:9097`
-- 默认代理组：`PROXY`
-- systemd 用户服务名：`mihomo.service`
-
-如需修改这些默认值，可以编辑：
-
-- `bin/proxy-on`
-- `shell/clash.sh`
-- `systemd/user/mihomo.service`
+- Proxy port: `7890`
+- API endpoint: `http://127.0.0.1:9097`
+- Proxy group: `PROXY`
+- systemd user service: `mihomo.service`
