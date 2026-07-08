@@ -4,4 +4,19 @@ set -euo pipefail
 gsettings set org.gnome.system.proxy mode 'none'
 systemctl --user stop mihomo 2>/dev/null || true
 
-echo "Clash/Mihomo proxy disabled"
+cat <<'EOF'
+🚀 Clash for Ubuntu
+
+▶ Action:
+  Disabling the GNOME system proxy and stopping Mihomo service...
+
+✅ Result:
+  Proxy disabled successfully.
+
+📌 Details:
+  GNOME proxy mode : none
+  Service          : mihomo.service stopped
+
+💡 Tip:
+  Run "clash on" to start the proxy again.
+EOF

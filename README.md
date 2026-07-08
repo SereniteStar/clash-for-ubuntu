@@ -11,6 +11,7 @@ git clone https://github.com/SereniteStar/clash-for-ubuntu.git
 cd clash-for-ubuntu
 ./install.sh
 source ~/.bash_aliases
+clash
 ```
 
 `install.sh` automatically:
@@ -41,18 +42,37 @@ CONFIG_URL='https://example.com/your-config.yaml' ./install.sh
 
 > Note: this repository does not store your subscription URL or provider config. Provide it separately on each computer.
 
+## Command menu
+
+Run `clash` with no arguments to open the command menu:
+
+```text
+╭────────────────────────────────────────────╮
+│ 🚀 Clash for Ubuntu                        │
+│ Mihomo proxy management shortcuts          │
+╰────────────────────────────────────────────╯
+
+📦 Version : 1.0.0
+👤 Author  : SereniteStar
+🛠  Service : mihomo.service
+🌐 API     : http://127.0.0.1:9097
+🔌 Proxy   : 127.0.0.1:7890
+🧩 Group   : PROXY
+```
+
 ## Usage
 
 After installation, the `clash` command is available:
 
 ```bash
-clash on                  # Start Mihomo and enable the GNOME system proxy
-clash off                 # Stop Mihomo and disable the GNOME system proxy
-clash restart             # Restart Mihomo and enable the system proxy
-clash status              # Show the Mihomo systemd user service status
-clash list                # List nodes in the PROXY proxy group
-clash switch [node-number] # Switch to a node shown by clash list
-clash import [subscription-url-or-config-file] # Import a Clash subscription/config
+clash                                # Open the command menu
+clash on                             # Start Mihomo and enable the GNOME system proxy
+clash off                            # Stop Mihomo and disable the GNOME system proxy
+clash restart                        # Restart Mihomo and enable the system proxy
+clash status                         # Show service, proxy, config, and API health
+clash list                           # List nodes in the PROXY proxy group
+clash switch <node-number>           # Switch to a node shown by clash list
+clash import <url-or-file>           # Import a Clash subscription/config
 ```
 
 If no config is provided during first install, the script creates a sample file:

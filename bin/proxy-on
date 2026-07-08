@@ -11,4 +11,22 @@ gsettings set org.gnome.system.proxy.https port 7890
 gsettings set org.gnome.system.proxy.socks host '127.0.0.1'
 gsettings set org.gnome.system.proxy.socks port 7890
 
-echo "Clash/Mihomo proxy enabled: 127.0.0.1:7890"
+cat <<'EOF'
+🚀 Clash for Ubuntu
+
+▶ Action:
+  Starting Mihomo service and enabling the GNOME system proxy...
+
+✅ Result:
+  Proxy enabled successfully.
+
+📌 Details:
+  HTTP proxy  : 127.0.0.1:7890
+  HTTPS proxy : 127.0.0.1:7890
+  SOCKS proxy : 127.0.0.1:7890
+  Service     : mihomo.service
+
+➡ Next steps:
+  clash status    Check service and proxy status
+  clash list      Show available proxy nodes
+EOF

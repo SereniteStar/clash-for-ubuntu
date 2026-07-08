@@ -194,4 +194,4 @@ systemctl --user enable mihomo >/dev/null
 
 echo "Installation complete."
 echo "Open a new terminal, or run: source ~/.bash_aliases"
-echo "Common commands: clash on / clash off / clash list / clash switch [node-number]"
+echo "Run \"clash\" to open the command menu, or use: clash import / clash on / clash list / clash switch"
