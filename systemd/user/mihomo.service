@@ -1,0 +1,14 @@
+[Unit]
+Description=Mihomo Clash Proxy
+Documentation=https://wiki.metacubex.one/
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/mihomo -d %h/.config/mihomo
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=default.target

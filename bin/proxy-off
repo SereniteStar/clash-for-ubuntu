@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+gsettings set org.gnome.system.proxy mode 'none'
+systemctl --user stop mihomo 2>/dev/null || true
+
+echo "Clash/Mihomo 代理已关闭"
