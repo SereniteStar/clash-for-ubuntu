@@ -44,21 +44,7 @@ CONFIG_URL='https://example.com/your-config.yaml' ./install.sh
 
 ## Command menu
 
-Run `clash` with no arguments to open the command menu:
-
-```text
-╭────────────────────────────────────────────╮
-│ 🚀 Clash for Ubuntu                        │
-│ Mihomo proxy management shortcuts          │
-╰────────────────────────────────────────────╯
-
-📦 Version : 1.0.0
-👤 Author  : SereniteStar
-🛠  Service : mihomo.service
-🌐 API     : http://127.0.0.1:9097
-🔌 Proxy   : 127.0.0.1:7890
-🧩 Group   : PROXY
-```
+Run `clash` with no arguments to open the command menu.
 
 ## Usage
 
